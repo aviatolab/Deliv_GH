@@ -1,0 +1,16 @@
+{% extends 'basis/base.html' %}
+
+{% block title %}
+Register | Stepik Delivery
+{% endblock %}
+
+{% block main %}
+<main class="container">
+    <div class="row">
+        <div class="h4 mt-5 blue-text">
+            Поздравляем с успешной регистрацией, {{ username }}! Теперь вы можете
+            <a class="black-text link ml-4" href="{{ url_for('render_auth') }}">войти в свой аккаунт</a>
+        </div>
+    </div>
+</main>
+{% endblock %}

@@ -1,0 +1,80 @@
+{% extends 'basis/base.html' %}
+
+{% block title %}
+Cart | Stepik Delivery
+{% endblock %}
+
+{% block header %}
+{% include 'basis/header.html' %}
+{% endblock %}
+
+{% block main %}
+<main class="container">
+    <h1 class="h3 my-4">Корзина</h1>
+
+    <div class="row mt-5">
+        <div class="col-4">
+            {% if is_auth %}
+            <form action="/ordered" method="post">
+                <h4 class="">Ваши данные</h4>
+                <div class=" md-4 order-md-1">
+                    <div class="mt-3 mb-3">
+                        {{ form.client_name.label }}
+                        {{ form.client_name(class='font-weight-bold form-control') }}
+                    </div>
+                </div>
+                <div class=" md-4 order-md-1">
+                    <div class="mt-3 mb-3">
+                        {{ form.address.label }}
+                        {{ form.address(class='font-weight-bold form-control') }}
+                    </div>
+                </div>
+                <div class=" md-4 order-md-1">
+                    <div class="mt-3 mb-3">
+                        {{ form.phone.label }}
+                        {{ form.phone(class='font-weight-bold form-control') }}
+                    </div>
+                    {{ form.order_sum() }}
+                    {{ form.order_cart() }}
+                </div>
+                {{ form.submit(class='mt-3 mb-5 btn btn-danger') }}
+            </form>
+            {% else %}
+            <div>
+                Чтобы заказать,
+                <a class="black-text link ml-4" href="{{ url_for('render_auth') }}">Войдите/зарегистрируйтесь</a>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="col-1"></div>
+        <div class="col-7">
+            <h4 class="mb-3 col-7 mb-5">{{ dishes | length }} {{ decline_dish(dishes | length) }} в корзине</h4>
+            <table class="table">
+                <tbody>
+                {% for dish in dishes %}
+                <tr>
+                    <th scope="row">{{ dish.title }}</th>
+                    <td></td>
+                    <td>{{ dish.amount }}</td>
+                    <td>{{ dish.price }}</td>
+                    <td><a class="text-danger" href="{{ url_for('delete_from_cart', dish_id=dish.id) }}">Удалить</a>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% if dishes | length > 0 %}
+                <a id="clear-cart" class="red-link">Очистить корзину</a>
+            {% endif %}
+            <hr>
+            <p class="display-4 my-2 ">{{ sum }} руб</p>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/cart.js') }}"></script>
+</main>
+{% endblock %}
+
+{% block footer %}
+{% include 'basis/footer.html' %}
+{% endblock %}
